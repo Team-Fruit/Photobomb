@@ -7,10 +7,13 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.opengl.GL11;
 
+@Mod.EventBusSubscriber({Dist.CLIENT})
 public class PhotobombRenderer {
     private final ResourceLocation res = new ResourceLocation("photobomb", "textures/hidden.png");
     private final RenderType.State state = RenderType.State.getBuilder()
@@ -33,12 +36,14 @@ public class PhotobombRenderer {
 
     @SubscribeEvent
     public void onRenderPlayer(RenderPlayerEvent.Post event) {
+        GameRenderer gameRenderer = Minecraft.getInstance().gameRenderer;
+        ActiveRenderInfo info = gameRenderer.getActiveRenderInfo();
+
         float partialTicks = event.getPartialRenderTick();
 
         MatrixStack matrixStack = event.getMatrixStack();
         matrixStack.push(); // push matrix
 
-        ActiveRenderInfo info = Minecraft.getInstance().gameRenderer.getActiveRenderInfo();
         Quaternion rot = info.getRotation();
         Vec3d camPosition = info.getProjectedView();
         Vec3d playerPosition = event.getPlayer().getEyePosition(partialTicks);
