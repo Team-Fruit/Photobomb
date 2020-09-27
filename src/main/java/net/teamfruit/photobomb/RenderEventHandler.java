@@ -29,8 +29,8 @@ public class RenderEventHandler {
             if (event.phase == TickEvent.Phase.START) {
                 try {
                     shaderhandler.checkShaders(event, mc);
-                } catch (Exception ignored) {
-                    ;
+                } catch (Exception e) {
+                    Log.log.error("Shader unknown error: ", e);
                 }
             }
         }

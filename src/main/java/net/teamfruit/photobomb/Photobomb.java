@@ -1,5 +1,7 @@
 package net.teamfruit.photobomb;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.shader.Framebuffer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -28,7 +30,10 @@ public class Photobomb {
     @SubscribeEvent
     public void doClientStuff(final FMLClientSetupEvent event) {
         // do something that can only be done on the client
-        Log.log.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
+        Framebuffer framebuffer = event.getMinecraftSupplier().get().getFramebuffer();
+        Log.log.info("Enabling stencil buffer");
+        framebuffer.enableStencil();
+        Log.log.info("StencilBuffer: {}", framebuffer.isStencilEnabled());
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

@@ -14,12 +14,12 @@ public class PhotobombAttributes {
             0.0F, 0.0F, Float.MAX_VALUE).setDescription("Photobomb Type").setShouldWatch(true);
 
     @SubscribeEvent
-    public void attachAttributes(EntityEvent.EntityConstructing event) {
+    public static void attachAttributes(EntityEvent.EntityConstructing event) {
         if (event.getEntity() instanceof LivingEntity) {
             final LivingEntity entity = (LivingEntity) event.getEntity();
             final AbstractAttributeMap map = entity.getAttributes();
-
-            map.registerAttribute(PHOTOBOMB_TYPE);
+            if (map.getAttributeInstance(PHOTOBOMB_TYPE) == null)
+                map.registerAttribute(PHOTOBOMB_TYPE);
         }
     }
 }
