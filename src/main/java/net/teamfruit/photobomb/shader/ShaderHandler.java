@@ -1,4 +1,4 @@
-package net.teamfruit.photobomb;
+package net.teamfruit.photobomb.shader;
 
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.client.Minecraft;
@@ -6,6 +6,8 @@ import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.TickEvent;
+import net.teamfruit.photobomb.Log;
+import net.teamfruit.photobomb.RegistryPhotobomb;
 
 import java.io.IOException;
 
@@ -19,7 +21,7 @@ public class ShaderHandler {
     protected void checkShaders(TickEvent.PlayerTickEvent event, Minecraft mc) {
         // Mosaic
         if (event.player.isPotionActive(RegistryPhotobomb.effect)) {
-            if (!RenderEventHandler.shaderGroups.containsKey(SHADER_MOSAIC)) {
+            if (!ShaderRenderEventHandler.shaderGroups.containsKey(SHADER_MOSAIC)) {
                 try {
                     ShaderGroup sg = new ShaderGroup(
                             mc.getTextureManager(),
@@ -36,36 +38,36 @@ public class ShaderHandler {
                     Log.log.error("Shader load error: ", e);
                 }
             }
-        } else if (RenderEventHandler.shaderGroups.containsKey(SHADER_MOSAIC)) {
+        } else if (ShaderRenderEventHandler.shaderGroups.containsKey(SHADER_MOSAIC)) {
             this.deactivateShader(SHADER_MOSAIC);
         }
     }
 
     void setShader(int shaderId, ShaderGroup target) {
-        if (RenderEventHandler.shaderGroups.containsKey(shaderId)) {
-            RenderEventHandler.shaderGroups.get(shaderId).close();
-            RenderEventHandler.shaderGroups.remove(shaderId);
+        if (ShaderRenderEventHandler.shaderGroups.containsKey(shaderId)) {
+            ShaderRenderEventHandler.shaderGroups.get(shaderId).close();
+            ShaderRenderEventHandler.shaderGroups.remove(shaderId);
         }
 
         try {
             if (target == null) {
                 this.deactivateShader(shaderId);
             } else {
-                RenderEventHandler.resetShaders = true;
-                RenderEventHandler.shaderGroups.put(shaderId, target);
+                ShaderRenderEventHandler.resetShaders = true;
+                ShaderRenderEventHandler.shaderGroups.put(shaderId, target);
             }
         } catch (Exception e) {
-            RenderEventHandler.shaderGroups.remove(shaderId);
+            ShaderRenderEventHandler.shaderGroups.remove(shaderId);
         }
     }
 
     public void deactivateShader(int shaderId) {
         maskFramebuffer = null;
 
-        if (RenderEventHandler.shaderGroups.containsKey(shaderId)) {
-            RenderEventHandler.shaderGroups.get(shaderId).close();
+        if (ShaderRenderEventHandler.shaderGroups.containsKey(shaderId)) {
+            ShaderRenderEventHandler.shaderGroups.get(shaderId).close();
         }
 
-        RenderEventHandler.shaderGroups.remove(shaderId);
+        ShaderRenderEventHandler.shaderGroups.remove(shaderId);
     }
 }

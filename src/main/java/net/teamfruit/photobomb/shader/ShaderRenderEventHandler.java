@@ -1,4 +1,4 @@
-package net.teamfruit.photobomb;
+package net.teamfruit.photobomb.shader;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.shader.ShaderGroup;
@@ -9,12 +9,12 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import org.lwjgl.opengl.GL11;
+import net.teamfruit.photobomb.Log;
 
 import java.util.HashMap;
 
-@EventBusSubscriber({Dist.CLIENT})
-public class RenderEventHandler {
+//@EventBusSubscriber({Dist.CLIENT})
+public class ShaderRenderEventHandler {
     private static ShaderHandler shaderhandler = new ShaderHandler();
     public static HashMap<Integer, ShaderGroup> shaderGroups = new HashMap<>();
 
